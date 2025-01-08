@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <h2 class="text-center">Login Form</h2>
+    <h2 v-if="!isLoggedIn" class="text-center">Login Form</h2>
+    <h2 v-else class="text-center">Welcome, {{ username }}!</h2>
+
     <form @submit.prevent="handleSubmit" v-if="!isLoggedIn">
       <div>
         <label for="username">Username:</label>
@@ -10,16 +12,17 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" class="login">Login</button>
     </form>
 
     <div v-if="isLoggedIn">
-      <h3>Welcome, {{ username }}!</h3>
-      <button v-if="isEditor" @click="addUser">Add User</button>
-      <button @click="logout">Logout</button>
+      <button v-if="isEditor" @click="addUser" class="add_user">
+        Add User
+      </button>
+      <button @click="logout" class="logout">Logout</button>
     </div>
 
-    <div v-if="message">{{ message }}</div>
+    <div v-if="message" class="text-center">{{ message }}</div>
   </div>
 </template>
 
@@ -75,6 +78,9 @@ export default {
       localStorage.removeItem("loggedInUser");
       localStorage.removeItem("userRole");
       this.message = "You have logged out.";
+      setTimeout(() => {
+        this.message = "";
+      }, 3000);
     },
   },
 };
@@ -112,14 +118,27 @@ input {
 button {
   padding: 0.5em;
   color: white;
-  background-color: #007bff;
   width: 100%;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-
-button:hover {
+.login {
+  background-color: #007bff;
+}
+.add_user {
+  background-color: #1b8a2a;
+}
+.logout {
+  background-color: #a5281f;
+}
+.login:hover {
   background-color: #0056b3;
+}
+.logout:hover {
+  background: #8f231b;
+}
+.add_user:hover {
+  background: #187c25;
 }
 </style>
