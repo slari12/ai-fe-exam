@@ -102,14 +102,15 @@ export default {
   border-radius: 5px;
 }
 .main-card {
-  max-width: 900px;
+  max-width: 700px;
   margin: auto;
-  padding: 1em;
+  padding: 16px 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 h2 {
   margin-bottom: 10px;
+  font-size: 25px;
 }
 div {
   margin-bottom: 1em;

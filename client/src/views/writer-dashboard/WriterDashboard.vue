@@ -10,13 +10,24 @@
       No Articles available at this moment
     </div>
     <div v-else>
-      <div v-for="(article, index) in userArticles" :key="index">
-        <img :src="article.thumbnail" alt="Article Thumbnail" />
-        <h3>{{ article.title }}</h3>
-        <p>{{ article.content }}</p>
-        <button @click="deleteArticle(index)" class="delete-button">
-          Delete
-        </button>
+      <div
+        class="article-container flex"
+        v-for="(article, index) in userArticles"
+        :key="index"
+        style="margin-bottom: 5px"
+      >
+        <img
+          :src="article.thumbnail"
+          alt="Article Thumbnail"
+          class="news-thumbnail"
+        />
+        <div>
+          <h3 class="news-title">{{ article.title }}</h3>
+          <p class="news-content">{{ article.content }}</p>
+          <button @click="deleteArticle(index)" class="delete-button">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -58,13 +69,43 @@ export default {
   margin: 10px 0;
   padding: 0.5rem;
   text-align: center;
-  border-radius: 5px;
+}
+.article-div,
+.article-container {
   background-color: #4242428a;
+  color: white;
+  border-radius: 5px;
+  padding: 15px;
 }
 .create-article:hover {
   text-decoration: underline;
 }
 .create-article {
   color: #007bff;
+}
+.news-thumbnail {
+  max-width: 200px;
+  margin-right: 20px;
+}
+.news-title {
+  font-size: 20px;
+}
+.news-content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+  font-weight: 100;
+}
+.delete-button {
+  padding: 0.5em;
+  width: 120px;
+  background-color: #a5281f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>
