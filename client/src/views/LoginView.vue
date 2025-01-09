@@ -34,10 +34,12 @@
 
 <script>
 import WriterDashboard from "./writer-dashboard/WriterDashboard.vue";
+import CreateArticle from "./writer-dashboard/CreateArticle.vue";
 
 export default {
   components: {
     WriterDashboard,
+    CreateArticle,
   },
   data() {
     return {
