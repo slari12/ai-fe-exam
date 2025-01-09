@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-between">
+    <div class="flex justify-between" style="margin-bottom: 5px">
       <h2>My Articles</h2>
       <router-link to="/create-article" class="create-article"
         >Create Article</router-link
@@ -24,9 +24,14 @@
         <div>
           <h3 class="news-title">{{ article.title }}</h3>
           <p class="news-content">{{ article.content }}</p>
-          <button @click="deleteArticle(index)" class="delete-button">
-            Delete
-          </button>
+          <div>
+            <button @click="deleteArticle(index)" class="edit-button">
+              Edit
+            </button>
+            <button @click="deleteArticle(index)" class="delete-button">
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -79,6 +84,7 @@ export default {
 }
 .create-article:hover {
   text-decoration: underline;
+  background-color: transparent;
 }
 .create-article {
   color: #007bff;
@@ -100,9 +106,23 @@ export default {
   font-weight: 100;
 }
 .delete-button {
+  background-color: #a5281f;
+}
+.delete-button:hover {
+  background: #8f231b;
+}
+.edit-button:hover {
+  background: #3e4246;
+}
+.edit-button {
+  background-color: #494d52;
+  margin-right: 5px;
+}
+.delete-button,
+.edit-button {
   padding: 0.5em;
   width: 120px;
-  background-color: #a5281f;
+
   color: white;
   border: none;
   border-radius: 5px;
