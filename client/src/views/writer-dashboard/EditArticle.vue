@@ -60,12 +60,14 @@ export default {
       const publishedArticles =
         JSON.parse(localStorage.getItem("publishedArticles")) || [];
 
+      // Add the article to the publishedArticles array
       publishedArticles.push(articles[articleId]);
       localStorage.setItem(
         "publishedArticles",
         JSON.stringify(publishedArticles)
       );
 
+      // Remove the article from the articles array
       articles.splice(articleId, 1);
       localStorage.setItem("articles", JSON.stringify(articles));
 

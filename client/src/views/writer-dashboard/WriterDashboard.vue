@@ -43,7 +43,28 @@
     </div>
 
     <!-- PUBLISHED ARTICLES -->
-    <div></div>
+    <div v-if="publishedArticles.length <= 0">
+      <h2>Published Articles</h2>
+      <div
+        class="article-container flex"
+        v-for="(article, index) in publishedArticles"
+        :key="index"
+        style="margin-bottom: 5px"
+      >
+        <img
+          :src="article.thumbnail"
+          alt="Article Thumbnail"
+          class="news-thumbnail"
+        />
+        <div>
+          <h3 @click="viewArticle(index, true)" class="news-title">
+            {{ article.title }}
+          </h3>
+          <p class="news-content">{{ article.content }}</p>
+        </div>
+      </div>
+    </div>
+    <div v-else>NO PUBLISHED ARTICLES</div>
   </div>
 </template>
 
@@ -52,30 +73,56 @@ export default {
   data() {
     return {
       articles: [],
+      publishedArticles: [],
       currentUser: "user_writer",
     };
   },
   computed: {
     userArticles() {
       return this.articles.filter(
-        (article) => article.user === this.currentUser
+        (article) => article.user === this.currentUser && !article.published
+      );
+    },
+    publishedArticles() {
+      return this.articles.filter(
+        (article) => article.user === this.currentUser && article.published
       );
     },
   },
   created() {
     this.loadArticles();
+    this.loadPublishedArticles();
   },
   methods: {
     loadArticles() {
       this.articles = JSON.parse(localStorage.getItem("articles")) || [];
     },
+    loadPublishedArticles() {
+      this.publishedArticles =
+        JSON.parse(localStorage.getItem("publishedArticles")) || [];
+    },
     viewArticle(index) {
-      this.$router.push({ name: "ArticleDetail", params: { id: index } });
+      this.$router.push({
+        name: "ArticleDetail",
+        params: { id: index, isPublished },
+      });
     },
     deleteArticle(index) {
       this.articles.splice(index, 1);
       localStorage.setItem("articles", JSON.stringify(this.articles));
       alert("Article deleted successfully!");
+    },
+    publishArticle(index) {
+      const article = this.articles[index];
+      article.published = true;
+      this.articles.splice(index, 1);
+      this.publishedArticles.push(article);
+      localStorage.setItem("articles", JSON.stringify(this.articles));
+      localStorage.setItem(
+        "publishedArticles",
+        JSON.stringify(this.publishedArticles)
+      );
+      alert("Article published successfully!");
     },
   },
 };
