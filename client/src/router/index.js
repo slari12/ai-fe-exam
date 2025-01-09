@@ -32,6 +32,7 @@ const router = createRouter({
       path: "/edit/:id",
       name: "EditArticle",
       component: EditArticle,
+      props: true,
     },
     {
       path: "/about",

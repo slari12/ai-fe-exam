@@ -27,7 +27,13 @@
           </h3>
           <p class="news-content">{{ article.content }}</p>
           <div>
-            <button class="edit-button">Edit</button>
+            <router-link
+              :to="{ name: 'EditArticle', params: { id: index } }"
+              class="edit-article"
+            >
+              <button class="edit-button">Edit</button>
+            </router-link>
+
             <button @click="deleteArticle(index)" class="delete-button">
               Delete
             </button>
@@ -124,6 +130,9 @@ export default {
 .edit-button:hover {
   background: #3e4246;
 }
+.edit-article:hover {
+  background-color: transparent;
+}
 .edit-button {
   background-color: #494d52;
   margin-right: 5px;
@@ -132,7 +141,6 @@ export default {
 .edit-button {
   padding: 0.5em;
   width: 120px;
-
   color: white;
   border: none;
   border-radius: 5px;
