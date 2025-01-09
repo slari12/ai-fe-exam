@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <h2 v-if="!isLoggedIn" class="text-center">Login Form</h2>
-    <h2 v-else class="text-center">Welcome, {{ username }}!</h2>
+  <div id="app" v-if="!isLoggedIn">
+    <h2 class="text-center">Login Form</h2>
+    <!-- <h2 v-else class="text-center">Welcome, {{ username }}!</h2> -->
 
     <form @submit.prevent="handleSubmit" v-if="!isLoggedIn">
       <div>
@@ -13,21 +13,34 @@
         <input type="password" id="password" v-model="password" required />
       </div>
       <button type="submit" class="login">Login</button>
+      <div v-if="message" class="text-center">{{ message }}</div>
     </form>
+  </div>
 
-    <div v-if="isLoggedIn">
-      <button v-if="isEditor" @click="addUser" class="add_user">
-        Add User
-      </button>
-      <button @click="logout" class="logout">Logout</button>
+  <div v-if="isLoggedIn" class="main-card">
+    <div class="flex justify-between justify-items-center">
+      <h2 class="text-center">Welcome, {{ username }}!</h2>
+      <div class="upper-right">
+        <button v-if="isEditor" @click="addUser" class="add_user">
+          Add User
+        </button>
+        <button @click="logout" class="logout">Logout</button>
+      </div>
     </div>
 
-    <div v-if="message" class="text-center">{{ message }}</div>
+    <CreateArticle v-if="isLoggedIn" />
+    <WriterDashboard />
   </div>
 </template>
 
 <script>
+import WriterDashboard from "./writer-dashboard/WriterDashboard.vue";
+// import CreateArticle from "./writer-dashboard/CreateArticle.vue";
+
 export default {
+  components: {
+    WriterDashboard,
+  },
   data() {
     return {
       username: "",
@@ -94,6 +107,13 @@ export default {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+.main-card {
+  max-width: 900px;
+  margin: auto;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 h2 {
   margin-bottom: 10px;
 }
@@ -116,21 +136,44 @@ input {
 }
 
 button {
-  padding: 0.5em;
   color: white;
-  width: 100%;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 .login {
+  padding: 0.5em;
   background-color: #007bff;
+  width: 100%;
 }
-.add_user {
-  background-color: #1b8a2a;
+
+@media only screen and (min-width: 768px) {
+  .upper-right {
+    display: flex;
+  }
+  .logout,
+  .add_user {
+    width: 150px;
+  }
+  .add_user {
+    background-color: #1b8a2a;
+    margin-right: 10px;
+  }
+  .logout {
+    background-color: #a5281f;
+  }
+  button {
+    padding: 0.5em;
+  }
 }
-.logout {
-  background-color: #a5281f;
+@media only screen and (max-width: 768px) {
+  .add_user {
+    color: #1b8a2a;
+    margin-right: 10px;
+  }
+  .logout {
+    color: #a5281f;
+  }
 }
 .login:hover {
   background-color: #0056b3;
