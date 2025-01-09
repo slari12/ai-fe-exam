@@ -1,7 +1,6 @@
 <template>
   <div id="app" v-if="!isLoggedIn">
     <h2 class="text-center">Login Form</h2>
-    <!-- <h2 v-else class="text-center">Welcome, {{ username }}!</h2> -->
 
     <form @submit.prevent="handleSubmit" v-if="!isLoggedIn">
       <div>
@@ -35,7 +34,6 @@
 
 <script>
 import WriterDashboard from "./writer-dashboard/WriterDashboard.vue";
-// import CreateArticle from "./writer-dashboard/CreateArticle.vue";
 
 export default {
   components: {
@@ -61,24 +59,20 @@ export default {
   },
   methods: {
     handleSubmit() {
-      if (this.username === "user_writer" && this.password === "writer12345") {
+      const users = {
+        user_writer: { password: "writer12345", role: "writer" },
+        user_editor: { password: "editor12345", role: "editor" },
+      };
+
+      const user = users[this.username];
+      if (user && this.password === user.password) {
         this.isLoggedIn = true;
-        this.isEditor = false;
+        this.isEditor = user.role === "editor";
         localStorage.setItem("loggedInUser", this.username);
-        localStorage.setItem("userRole", "writer");
-      } else if (
-        this.username === "user_editor" &&
-        this.password === "editor12345"
-      ) {
-        this.isLoggedIn = true;
-        this.isEditor = true;
-        localStorage.setItem("loggedInUser", this.username);
-        localStorage.setItem("userRole", "editor");
+        localStorage.setItem("userRole", user.role);
       } else {
         this.message = "Invalid credentials. Please try again.";
       }
-      console.log("Username:", this.username);
-      console.log("Password:", this.password);
     },
     addUser() {
       alert("User added successfully!");
@@ -117,24 +111,14 @@ export default {
 h2 {
   margin-bottom: 10px;
 }
-
 div {
   margin-bottom: 1em;
 }
-
 label {
   margin-bottom: 0.5em;
   color: #ccc;
   display: block;
 }
-
-input {
-  border: 1px solid #cccccc;
-  background: transparent;
-  border-radius: 5px;
-  width: 100%;
-}
-
 button {
   color: white;
   border: none;
@@ -146,7 +130,12 @@ button {
   background-color: #007bff;
   width: 100%;
 }
-
+input {
+  border: 1px solid #cccccc;
+  background: transparent;
+  border-radius: 5px;
+  width: 100%;
+}
 @media only screen and (min-width: 768px) {
   .upper-right {
     display: flex;
@@ -182,6 +171,6 @@ button {
   background: #8f231b;
 }
 .add_user:hover {
-  background: #187c25;
+  background-color: #155724;
 }
 </style>
