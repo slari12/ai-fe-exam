@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="article-div" v-if="userArticles.length === 0">
+    <div class="flex justify-between" style="margin-bottom: 5px">
+      <h2>For Edit Articles</h2>
+      <router-link to="/create-article" class="create-article"
+        >Write an article</router-link
+      >
+    </div>
+    <div class="article-div" v-if="drafts.length === 0">
       No Articles available at this moment
     </div>
     <div v-else>
-      <div class="flex justify-between" style="margin-bottom: 5px">
-        <h2>For Edit Articles</h2>
-        <router-link to="/create-article" class="create-article"
-          >Write an article</router-link
-        >
-      </div>
       <div
         class="article-container flex"
-        v-for="(article, index) in userArticles"
+        v-for="(article, index) in drafts"
         :key="index"
         style="margin-bottom: 5px"
       >
@@ -27,7 +27,7 @@
           </h3>
           <p class="news-content">{{ article.content }}</p>
           <div>
-            <button class="edit-button">Edit</button>
+            <button @click="editArticle" class="edit-button">Edit</button>
             <button @click="deleteArticle(index)" class="delete-button">
               Delete
             </button>
@@ -35,15 +35,45 @@
         </div>
       </div>
     </div>
+
+    <!-- PUBLISHED SECTION -->
+    <h3 style="margin-top: 30px; margin-bottom: 5px">Published Articles</h3>
+    <div class="article-div" v-if="publishedArticles.length === 0">
+      No Published Articles available
+    </div>
+    <div v-else>
+      <div
+        v-for="(article, index) in publishedArticles"
+        :key="index"
+        class="article-container flex"
+        style="margin-bottom: 5px"
+      >
+        <img
+          :src="article.thumbnail"
+          alt="Article Thumbnail"
+          class="news-thumbnail"
+        />
+        <div>
+          <h3 @click="viewArticle(index, true)" class="news-title">
+            {{ article.title }}
+          </h3>
+          <p class="news-content">{{ article.content }}</p>
+
+          <button @click="deletePublishedArticle(index)" class="delete-button">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import ArticleDetail from "./ArticleDetail.vue";
 export default {
   data() {
     return {
-      articles: [],
+      drafts: [],
+      publishedArticles: [],
       currentUser: "user_writer",
     };
   },
@@ -59,15 +89,30 @@ export default {
   },
   methods: {
     loadArticles() {
-      this.articles = JSON.parse(localStorage.getItem("articles")) || [];
+      this.drafts = JSON.parse(localStorage.getItem("articles")) || [];
+      this.publishedArticles =
+        JSON.parse(localStorage.getItem("publishedArticles")) || [];
     },
-    viewArticle(index) {
-      this.$router.push({ name: "ArticleDetail", params: { id: index } });
+    viewArticle(index, isPublished = false) {
+      const articles = isPublished ? this.publishedArticles : this.drafts;
+      this.$router.push({
+        name: "ArticleDetail",
+        params: { id: index, published: isPublished },
+      }); // Redirect to ArticleDetail with index
     },
+
     deleteArticle(index) {
-      this.articles.splice(index, 1);
-      localStorage.setItem("articles", JSON.stringify(this.articles));
-      alert("Article deleted successfully!");
+      this.drafts.splice(index, 1);
+      localStorage.setItem("articles", JSON.stringify(this.drafts));
+      alert("Draft deleted successfully!");
+    },
+    deletePublishedArticle(index) {
+      this.publishedArticles.splice(index, 1);
+      localStorage.setItem(
+        "publishedArticles",
+        JSON.stringify(this.publishedArticles)
+      );
+      alert("Published article deleted successfully!");
     },
   },
 };

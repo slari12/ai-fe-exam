@@ -12,9 +12,15 @@
       </div>
       <div>
         <label for="content">Content:</label>
-        <textarea id="content" v-model="content" required></textarea>
+        <textarea
+          cols="30"
+          rows="10"
+          id="content"
+          v-model="content"
+          required
+        ></textarea>
       </div>
-      <button type="submit" class="submit">Submit Article</button>
+      <button type="submit" class="submit">Save Draft</button>
     </form>
   </div>
 </template>

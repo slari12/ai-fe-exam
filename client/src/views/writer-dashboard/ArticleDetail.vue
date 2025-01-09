@@ -4,7 +4,7 @@
     <div class="article-detail">
       <div class="flex justify-between items-center">
         <h2 class="article-title">{{ article.title }}</h2>
-        <h2 class="edit-article">Edit Article</h2>
+        <h2 @click="editArticle" class="edit-article">Edit Article</h2>
       </div>
       <img
         :src="article.thumbnail"
@@ -31,6 +31,12 @@ export default {
   methods: {
     goBack() {
       this.$router.push({ name: "login" });
+    },
+    editArticle() {
+      this.$router.push({
+        name: "EditArticle",
+        params: { id: this.$route.params.id },
+      });
     },
   },
 };
