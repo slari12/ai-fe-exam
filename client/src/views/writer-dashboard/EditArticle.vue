@@ -88,6 +88,20 @@ export default {
 .publish-article {
   margin-top: 10px;
 }
+.save-draft,
+.publish-article {
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0.5em;
+  background-color: #1b8a2a;
+  width: 100%;
+}
+.save-draft:hover,
+.publish-article:hover {
+  background-color: #155724;
+}
 input,
 textarea {
   border: 1px solid #cccccc;
