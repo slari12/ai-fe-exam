@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="flex justify-between" style="margin-bottom: 5px">
-      <h2>My Articles</h2>
-      <router-link to="/create-article" class="create-article"
-        >Create Article</router-link
-      >
-    </div>
     <div class="article-div" v-if="userArticles.length === 0">
       No Articles available at this moment
     </div>
     <div v-else>
+      <div class="flex justify-between" style="margin-bottom: 5px">
+        <h2>For Edit Articles</h2>
+        <router-link to="/create-article" class="create-article"
+          >Write an article</router-link
+        >
+      </div>
       <div
         class="article-container flex"
         v-for="(article, index) in userArticles"
@@ -22,12 +22,12 @@
           class="news-thumbnail"
         />
         <div>
-          <h3 class="news-title">{{ article.title }}</h3>
+          <h3 @click="viewArticle(index)" class="news-title">
+            {{ article.title }}
+          </h3>
           <p class="news-content">{{ article.content }}</p>
           <div>
-            <button @click="deleteArticle(index)" class="edit-button">
-              Edit
-            </button>
+            <button class="edit-button">Edit</button>
             <button @click="deleteArticle(index)" class="delete-button">
               Delete
             </button>
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import ArticleDetail from "./ArticleDetail.vue";
 export default {
   data() {
     return {
@@ -59,6 +60,9 @@ export default {
   methods: {
     loadArticles() {
       this.articles = JSON.parse(localStorage.getItem("articles")) || [];
+    },
+    viewArticle(index) {
+      this.$router.push({ name: "ArticleDetail", params: { id: index } });
     },
     deleteArticle(index) {
       this.articles.splice(index, 1);
@@ -95,6 +99,10 @@ export default {
 }
 .news-title {
   font-size: 20px;
+}
+.news-title:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 .news-content {
   display: -webkit-box;
