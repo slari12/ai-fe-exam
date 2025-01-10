@@ -12,8 +12,8 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  base: "/", // Ensures the app is served correctly in production
+  base: "/",
   build: {
-    outDir: "dist", // Output directory for built files
+    outDir: "dist",
   },
 });
