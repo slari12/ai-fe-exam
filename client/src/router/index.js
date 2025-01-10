@@ -4,6 +4,7 @@ import WriterDashboard from "@/views/writer-dashboard/WriterDashboard.vue";
 import CreateArticle from "@/views/writer-dashboard/CreateArticle.vue";
 import ArticleDetail from "@/views/writer-dashboard/ArticleDetail.vue";
 import EditArticle from "@/views/writer-dashboard/EditArticle.vue";
+import UserManagement from "@/views/writer-dashboard/UserManagement.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: "/article/:id",
       name: "ArticleDetail",
       component: ArticleDetail,
+    },
+    {
+      path: "/user-management",
+      name: "UserManagement",
+      component: UserManagement,
     },
     {
       path: "/edit/:id",

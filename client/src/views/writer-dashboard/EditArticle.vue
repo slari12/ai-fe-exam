@@ -60,19 +60,22 @@ export default {
       const publishedArticles =
         JSON.parse(localStorage.getItem("publishedArticles")) || [];
 
-      // Add the article to the publishedArticles array
-      publishedArticles.push(articles[articleId]);
+      const article = { ...articles[articleId] }; // Clone the article to avoid mutating
+      article.published = true;
+
+      // Add to publishedArticles and remove from articles
+      publishedArticles.push(article);
+      articles.splice(articleId, 1);
+
+      localStorage.setItem("articles", JSON.stringify(articles));
       localStorage.setItem(
         "publishedArticles",
         JSON.stringify(publishedArticles)
       );
 
-      // Remove the article from the articles array
-      articles.splice(articleId, 1);
-      localStorage.setItem("articles", JSON.stringify(articles));
-
       alert("Article published successfully!");
       this.$router.push({ name: "login" });
+      console.log("Published article:", article);
     },
   },
 };

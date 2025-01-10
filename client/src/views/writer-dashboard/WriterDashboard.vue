@@ -11,7 +11,7 @@
     </div>
     <div v-else>
       <div
-        class="article-container flex"
+        class="article-container"
         v-for="(article, index) in userArticles"
         :key="index"
         style="margin-bottom: 5px"
@@ -26,7 +26,7 @@
             {{ article.title }}
           </h3>
           <p class="news-content">{{ article.content }}</p>
-          <div>
+          <div class="edit-delete">
             <router-link
               :to="{ name: 'EditArticle', params: { id: index } }"
               class="edit-article"
@@ -43,28 +43,27 @@
     </div>
 
     <!-- PUBLISHED ARTICLES -->
-    <div v-if="publishedArticles.length <= 0">
-      <h2>Published Articles</h2>
+    <div v-if="publishedArticles.length === 0">No Published Articles yet</div>
+    <div v-else>
       <div
         class="article-container flex"
-        v-for="(article, index) in publishedArticles"
+        v-for="(particle, index) in publishedArticles"
         :key="index"
         style="margin-bottom: 5px"
       >
         <img
-          :src="article.thumbnail"
+          :src="particle.thumbnail"
           alt="Article Thumbnail"
           class="news-thumbnail"
         />
         <div>
           <h3 @click="viewArticle(index, true)" class="news-title">
-            {{ article.title }}
+            {{ particle.title }}
           </h3>
-          <p class="news-content">{{ article.content }}</p>
+          <p class="news-content">{{ particle.content }}</p>
         </div>
       </div>
     </div>
-    <div v-else>NO PUBLISHED ARTICLES</div>
   </div>
 </template>
 
@@ -73,7 +72,7 @@ export default {
   data() {
     return {
       articles: [],
-      publishedArticles: [],
+      publishedArticlesList: [],
       currentUser: "user_writer",
     };
   },
@@ -98,14 +97,8 @@ export default {
       this.articles = JSON.parse(localStorage.getItem("articles")) || [];
     },
     loadPublishedArticles() {
-      this.publishedArticles =
+      this.publishedArticlesList =
         JSON.parse(localStorage.getItem("publishedArticles")) || [];
-    },
-    viewArticle(index) {
-      this.$router.push({
-        name: "ArticleDetail",
-        params: { id: index, isPublished },
-      });
     },
     deleteArticle(index) {
       this.articles.splice(index, 1);
@@ -113,15 +106,12 @@ export default {
       alert("Article deleted successfully!");
     },
     publishArticle(index) {
-      const article = this.articles[index];
+      const article = { ...this.articles[index] };
       article.published = true;
       this.articles.splice(index, 1);
-      this.publishedArticles.push(article);
+      this.publishedArticlesList.push(article);
       localStorage.setItem("articles", JSON.stringify(this.articles));
-      localStorage.setItem(
-        "publishedArticles",
-        JSON.stringify(this.publishedArticles)
-      );
+      localStorage.setItem("publishedArticles");
       alert("Article published successfully!");
     },
   },
@@ -140,6 +130,9 @@ export default {
   color: white;
   border-radius: 5px;
   padding: 15px;
+}
+.article-container {
+  display: flex;
 }
 .create-article:hover {
   text-decoration: underline;
@@ -192,5 +185,17 @@ export default {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+  .edit-button {
+    margin: 0;
+  }
+  .news-thumbnail {
+    min-width: none;
+    max-width: 100%;
+  }
+  .article-container {
+    display: block;
+  }
 }
 </style>

@@ -21,7 +21,7 @@
       <h2 class="text-center">Welcome, {{ username }}!</h2>
       <div class="upper-right">
         <button v-if="isEditor" @click="addUser" class="add_user">
-          Add User
+          Manage Users
         </button>
         <button @click="logout" class="logout">Logout</button>
       </div>
@@ -34,12 +34,10 @@
 
 <script>
 import WriterDashboard from "./writer-dashboard/WriterDashboard.vue";
-// import CreateArticle from "./writer-dashboard/CreateArticle.vue";
 
 export default {
   components: {
     WriterDashboard,
-    // CreateArticle,
   },
   data() {
     return {
@@ -50,6 +48,7 @@ export default {
       message: "",
     };
   },
+
   created() {
     const storedUser = localStorage.getItem("loggedInUser");
     const storedRole = localStorage.getItem("userRole");
@@ -60,14 +59,43 @@ export default {
     }
   },
   methods: {
+    addUser() {
+      this.$router.push("/user-management");
+    },
     handleSubmit() {
-      const users = {
-        user_writer: { password: "writer12345", role: "writer" },
-        user_editor: { password: "editor12345", role: "editor" },
-      };
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(
+        (u) => u.username === this.username && u.password === this.password
+      );
 
-      const user = users[this.username];
-      if (user && this.password === user.password) {
+      // Check if the user is the predefined "user_editor"
+      const user_editor = {
+        username: "user_editor",
+        password: "editor12345",
+        role: "editor",
+      };
+      const user_writer = {
+        username: "user_writer",
+        password: "writer12345",
+        role: "writer",
+      };
+      if (
+        this.username === user_editor.username &&
+        this.password === user_editor.password
+      ) {
+        this.isLoggedIn = true;
+        this.isEditor = true;
+        localStorage.setItem("loggedInUser", this.username);
+        localStorage.setItem("userRole", user_editor.role);
+      } else if (
+        this.username === user_writer.username &&
+        this.password === user_writer.password
+      ) {
+        this.isLoggedIn = true;
+        this.isEditor = false;
+        localStorage.setItem("loggedInUser", this.username);
+        localStorage.setItem("userRole", user_writer.role);
+      } else if (user) {
         this.isLoggedIn = true;
         this.isEditor = user.role === "editor";
         localStorage.setItem("loggedInUser", this.username);
@@ -75,9 +103,6 @@ export default {
       } else {
         this.message = "Invalid credentials. Please try again.";
       }
-    },
-    addUser() {
-      alert("User added successfully!");
     },
     logout() {
       this.isLoggedIn = false;
